@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# usage:
+#
+# ./setup
+#
+
+# create dotenv file from example
+cp .env.example .env
+rm .env.example
+
+# create a virtualenv for your lambda
+source `which virtualenvwrapper.sh`
+mkvirtualenv {{cookiecutter.repo_name}}
+
+echo "Now type 'workon {{cookiecutter.repo_name}}'"

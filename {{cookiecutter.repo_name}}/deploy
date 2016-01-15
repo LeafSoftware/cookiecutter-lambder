@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+# usage:
+#
+# ./deploy
+#
+
+# Bail on fail
+set -e
+
+lambda="{{cookiecutter.lambda_name}}"
+long_name="Lambda-{{cookiecutter.lambda_name}}"
+site_packages="${WORKON_HOME}/{{cookiecutter.repo_name}}/lib/python2.7/site-packages"
+s3_key=lambder/lambdas/${lambda}_lambda.zip
+
+if [ ! -n "${S3_BUCKET:+1}" ]; then
+  echo "env S3_BUCKET must be set"
+  exit 1
+fi
+
+# Get the full name of the lambda function
+lambda_name=$( \
+  aws lambda list-functions --output text \
+    | grep -i ${long_name} \
+    | cut -f6
+)
+
+# Zip and upload lambda code.
+echo "Uploading zipfile"
+zip -j -r /tmp/${lambda}_lambda lambda/${lambda} -x "*.pyc"
+if [ -d $site_packages ]; then
+  pushd $site_packages
+  zip -r /tmp/${lambda}_lambda *
+  popd
+fi
+aws s3 cp /tmp/${lambda}_lambda.zip s3://$S3_BUCKET/$s3_key
+rm /tmp/${lambda}_lambda.zip
+
+# If the lambda role does not exist, create it
+role_name=${long_name}ExecuteRole
+if ! aws iam list-roles --output text | grep fooExecuteRole > /dev/null; then
+  echo "creating IAM role ${role_name}"
+  aws iam create-role \
+    --role-name $role_name \
+    --assume-role-policy-document file://iam/role_trust_policy.json
+else
+  echo "IAM role ${role_name} already exists"
+fi
+
+# Update the lambda role policy
+echo "Updating IAM role policy"
+aws iam put-role-policy \
+  --role-name $role_name \
+  --policy-name ${long_name}ExecutePolicy \
+  --policy-document file://iam/policy.json
+
+role_arn=$(
+  aws iam list-roles --output text \
+    | grep $role_name \
+    | cut -f2
+)
+
+# If the lambda exists, update its function with the uploaded code.
+if [ -n "${lambda_name:+1}" ]; then
+  echo "Updating lambda function"
+  aws lambda update-function-code \
+    --function-name $lambda_name \
+    --s3-bucket $S3_BUCKET \
+    --s3-key $s3_key
+else
+  echo "Creating the lambda function"
+  aws lambda create-function \
+    --function-name ${long_name} \
+    --runtime python2.7 \
+    --role  $role_arn \
+    --handler ${lambda}.handler \
+    --code S3Bucket=${S3_BUCKET},S3Key=$s3_key
+fi
