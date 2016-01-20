@@ -1,5 +1,5 @@
 {
-  "repo_name": "lambder-foo",
   "lambda_name": "foo",
+  "repo_name": "lambder-{{ cookiecutter.lambda_name }}",
   "s3_bucket": "mybucket"
 }

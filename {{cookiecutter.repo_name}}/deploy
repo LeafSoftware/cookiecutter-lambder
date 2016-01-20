@@ -37,7 +37,7 @@ rm /tmp/${lambda}_lambda.zip
 
 # If the lambda role does not exist, create it
 role_name=${long_name}ExecuteRole
-if ! aws iam list-roles --output text | grep fooExecuteRole > /dev/null; then
+if ! aws iam list-roles --output text | grep $role_name > /dev/null; then
   echo "creating IAM role ${role_name}"
   aws iam create-role \
     --role-name $role_name \
