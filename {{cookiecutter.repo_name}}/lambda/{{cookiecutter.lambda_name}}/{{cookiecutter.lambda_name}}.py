@@ -9,10 +9,10 @@ logger.setLevel(logging.INFO)
 # with Lambda and run on a schedule
 def handler(event={}, context={}):
   if 'ping' in event:
-    logger.info("pong")
-    return
+    logger.info('pong')
+    return {'message': 'pong'}
 
-  logger.info("hello world")
+  logger.info('hello world')
   return {'message': 'Hello World'}
 
 # If being called locally, just call handler
