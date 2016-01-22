@@ -1,33 +1,36 @@
-{{cookiecutter.repo_name}}
---------------------------
+# {{cookiecutter.repo_name}}
 
 {{cookiecutter.lambda_name}} is an AWS Lambda function for use with Lambder.
 
 REQUIRES:
-* aws-cli
-* virtualenvwrapper
+* python-lambder
 
-To first setup your project:
+## Getting Started
 
-    ./setup
+1) Test the sample lambda function
 
-Source the environment file.
+    python lambda/{{cookiecutter.lambda_name}}/{{cookiecutter.lambda_name}}.py
 
-    source .env
+2) Deploy the sample Lambda function to AWS
 
-To test your lambda locally:
+    lambder function deploy
 
-    ./run
+3) Invoke the sample Lambda function in AWS
 
-To create or update your lambda code:
+    lambder function invoke --input input/ping.json
 
-    ./deploy
+4) Add useful code to lambda/{{cookiecutter.lambda_name}}/{{cookiecutter.lambda_name}}.py
 
-Using virtualenvwrapper
------------------------
+5) Add any permissions you need to access other AWS resources to iam/policy.json
 
-Your lambdas should be as small as possible to reduce spinup time. If you need
-to include extra python modules, use the virtualenv created by the setup script.
+6) Update your lambda and permissions policy in one go
+
+    lambder function deploy
+
+## Using virtualenvwrapper
+
+Your Lambdas should be as small as possible to reduce spinup time. If you need
+to include extra python modules, use virtualenvwrapper.
 The deploy script will look for a site-packages directory in
 $WORKON_HOME/{{cookiecutter.repo_name}} and bundle those packages into the zip
-it uploads to AWS Lambda.
+that it uploads to AWS Lambda.

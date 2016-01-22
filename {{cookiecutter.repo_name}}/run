@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-# usage:
-#
-# ./run
-#
-
-lambda="{{cookiecutter.lambda_name}}"
-
-python lambda/$lambda/${lambda}.py
