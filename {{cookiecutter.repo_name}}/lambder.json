@@ -1,0 +1,4 @@
+{
+  "name": "{{ cookiecutter.lambda_name}}",
+  "s3_bucket": "{{ cookiecutter.s3_bucket }}"
+}
