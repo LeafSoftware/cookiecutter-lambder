@@ -17,5 +17,25 @@ def handler(event={}, context={}):
 
 # If being called locally, just call handler
 if __name__ == '__main__':
+  import os
+  import json
+  import sys
+
   logging.basicConfig()
-  handler()
+  event = {}
+
+  # TODO if argv[1], read contents, parse into json
+  if sys.argv[1]:
+    input_file = sys.argv[1]
+    with open(input_file, 'r') as f:
+      data = f.read()
+    event = json.loads(data)
+
+  result = handler(event)
+  output = json.dumps(
+    result,
+    sort_keys=True,
+    indent=4,
+    separators=(',', ':')
+  )
+  logger.info(output)
