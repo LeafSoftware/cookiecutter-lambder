@@ -1,4 +1,7 @@
 {
   "name": "{{ cookiecutter.lambda_name}}",
-  "s3_bucket": "{{ cookiecutter.s3_bucket }}"
+  "s3_bucket": "{{ cookiecutter.s3_bucket }}",
+  "timeout": 3,
+  "memory": 128,
+  "description": ""
 }
