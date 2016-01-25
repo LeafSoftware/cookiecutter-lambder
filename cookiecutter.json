@@ -1,5 +1,8 @@
 {
   "lambda_name": "foo",
   "repo_name": "lambder-{{ cookiecutter.lambda_name }}",
-  "s3_bucket": "mybucket"
+  "s3_bucket": "mybucket",
+  "timeout": 3,
+  "memory": 128,
+  "description": ""
 }
