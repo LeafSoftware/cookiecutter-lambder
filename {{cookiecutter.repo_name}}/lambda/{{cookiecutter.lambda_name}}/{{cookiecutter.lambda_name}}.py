@@ -25,7 +25,7 @@ if __name__ == '__main__':
   event = {}
 
   # TODO if argv[1], read contents, parse into json
-  if sys.argv[1]:
+  if len(sys.argv) > 1:
     input_file = sys.argv[1]
     with open(input_file, 'r') as f:
       data = f.read()
