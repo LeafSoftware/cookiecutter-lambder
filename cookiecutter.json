@@ -4,5 +4,7 @@
   "s3_bucket": "mybucket",
   "timeout": 3,
   "memory": 128,
+  "subnet_ids": "",
+  "security_group_ids": "",
   "description": ""
 }

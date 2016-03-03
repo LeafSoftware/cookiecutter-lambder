@@ -3,5 +3,9 @@
   "s3_bucket": "{{ cookiecutter.s3_bucket }}",
   "timeout": {{ cookiecutter.timeout }},
   "memory": {{ cookiecutter.memory }},
+  {%- if cookiecutter.subnet_ids and cookiecutter.security_group_ids %}
+  "subnet_ids": "{{cookiecutter.subnet_ids}}",
+  "security_group_ids": "{{cookiecutter.security_group_ids}}",
+  {%- endif %}
   "description": "{{cookiecutter.description}}"
 }
